@@ -75,7 +75,7 @@ app.get("/api/users", async (req, res) => {
   }
 });
 
-// app.listen(port, () => {
-//   console.log(`server started on port ${port}`);
-// });
-app.listen();
+app.listen(port, () => {
+  console.log(`server started on port ${port}`);
+});
+// app.listen();
