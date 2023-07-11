@@ -35,11 +35,10 @@ app.put("/api/users/:userId/companies", async (req, res) => {
   console.log("message body", req.body);
 
   try {
-    const { userId } = req.params;
-    const { noOfCompany, productPerCompany } = req.body;
+    const { noOfCompany, productPerCompany, userId } = req.body;
 
     // Check if userId exists in the database
-    const checkQuery = `SELECT uid FROM users WHERE uid = $1`;
+    const checkQuery = `SELECT userid FROM users WHERE userid = $1`;
     const checkValues = [userId];
     const { rows } = await pool.query(checkQuery, checkValues);
     if (rows.length === 0) {
@@ -49,7 +48,7 @@ app.put("/api/users/:userId/companies", async (req, res) => {
     // Update the user's company details in the database
     const updateQuery = `UPDATE users 
     SET noofcompanies = $1, productpercompany = $2
-    WHERE uid = $3`;
+    WHERE userid = $3`;
     const updateValues = [noOfCompany, productPerCompany, userId];
     await pool.query(updateQuery, updateValues);
 
