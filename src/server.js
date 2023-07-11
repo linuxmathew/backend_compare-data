@@ -3,16 +3,18 @@ const cors = require("cors");
 const middleware = require("./middleware");
 const pool = require("./database/db");
 const dotenv = require("dotenv");
+const bodyParser = require("body-parser");
 
 const app = express();
 const port = 5000;
 app.use(cors());
+app.use(bodyParser.json());
 dotenv.config();
 
 // use middleware globally
 app.use(middleware.decodeToken);
 
-// registration
+// for registration
 app.post("/api/register", async (req, res) => {
   try {
     const { names, email, username, password } = req.body;
@@ -30,20 +32,24 @@ app.post("/api/register", async (req, res) => {
 
 // update company
 app.put("/api/users/:userId/companies", async (req, res) => {
+  console.log("message body", req.body);
   try {
     const { userId } = req.params;
-    const { noOfCompanies, productPerCompany } = req.body;
-    // check if userId exists in database
-    const checkQuery = "SELECT uid FROM users WHERE uid = $1";
+    const { noOfCompany, productPerCompany } = req.body;
+
+    // Check if userId exists in the database
+    const checkQuery = `SELECT uid FROM users WHERE uid = $1`;
     const checkValues = [userId];
     const { rows } = await pool.query(checkQuery, checkValues);
     if (rows.length === 0) {
       return res.status(404).json({ error: "User not found" });
     }
+
     // Update the user's company details in the database
-    const updateQuery =
-      "UPDATE users SET no_of_companies = $1, products_per_company = $2 WHERE id = $3";
-    const updateValues = [noOfCompanies, productPerCompany, userId];
+    const updateQuery = `UPDATE users 
+    SET noofcompanies = $1, productpercompany = $2
+    WHERE uid = $3`;
+    const updateValues = [noOfCompany, productPerCompany, userId];
     await pool.query(updateQuery, updateValues);
 
     res
