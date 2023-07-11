@@ -20,7 +20,7 @@ app.post("/api/register", async (req, res) => {
     const { names, email, username, password, userId } = req.body;
 
     const query =
-      "INSERT INTO users (names, email, username, password) VALUES ($1, $2, $3, $4, $5)";
+      "INSERT INTO users (names, email, username, password, userid) VALUES ($1, $2, $3, $4, $5)";
     const values = [names, email, username, password, userId];
     await pool.query(query, values);
     res.status(200).json({ message: "User Registered successfully" });
