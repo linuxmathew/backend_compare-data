@@ -17,11 +17,11 @@ dotenv.config();
 // for registration
 app.post("/api/register", async (req, res) => {
   try {
-    const { names, email, username, password } = req.body;
+    const { names, email, username, password, userId } = req.body;
 
     const query =
-      "INSERT INTO users (names, email, username, password) VALUES ($1, $2, $3, $4)";
-    const values = [names, email, username, password];
+      "INSERT INTO users (names, email, username, password) VALUES ($1, $2, $3, $4, $5)";
+    const values = [names, email, username, password, userId];
     await pool.query(query, values);
     res.status(200).json({ message: "User Registered successfully" });
   } catch (error) {
@@ -33,6 +33,7 @@ app.post("/api/register", async (req, res) => {
 // update company
 app.put("/api/users/:userId/companies", async (req, res) => {
   console.log("message body", req.body);
+
   try {
     const { userId } = req.params;
     const { noOfCompany, productPerCompany } = req.body;
