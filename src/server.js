@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const middleware = require("./middleware");
+// const middleware = require("./middleware");
 const pool = require("./database/db");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 dotenv.config();
 
 // use middleware globally
-app.use(middleware.decodeToken);
+// app.use(middleware.decodeToken);
 
 // for registration
 app.post("/api/register", async (req, res) => {
@@ -75,6 +75,7 @@ app.get("/api/users", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`server started on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`server started on port ${port}`);
+// });
+app.listen();
